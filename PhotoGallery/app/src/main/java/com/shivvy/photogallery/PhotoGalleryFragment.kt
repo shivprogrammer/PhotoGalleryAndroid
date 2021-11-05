@@ -10,12 +10,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.shivvy.photogallery.api.FlickrApi
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.scalars.ScalarsConverterFactory
 
 private const val TAG = "PhotoGalleryFragment"
 
@@ -25,11 +19,11 @@ class PhotoGalleryFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val flickrLiveData : LiveData<String> = FlickrFetcher().fetchPhotos()
+        val flickrLiveData : LiveData<List<GalleryItem>> = FlickrFetcher().fetchPhotos()
         flickrLiveData.observe(
                 this,
-                Observer { responseString ->
-                  Log.d(TAG, "Response received: $responseString")
+                Observer { galleryItems ->
+                  Log.d(TAG, "Response received: $galleryItems")
                 })
     }
 
@@ -43,8 +37,6 @@ class PhotoGalleryFragment : Fragment() {
         photoRecyclerView.layoutManager = GridLayoutManager(context, 3)
         return view
     }
-
-
 
     companion object {
         fun newInstance() = PhotoGalleryFragment()
